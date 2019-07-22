@@ -43,11 +43,11 @@ public class GetLatestdate
         //the list of datacollection can inheritate to any of class if you want use add method to add date
         //and the formate can also be adjust if needed
         //or use inpute box to let the user define the formate
-        //Although excel and many database tools such as hadoop,mango,oracle,and sqlsever has the ability to find the latest date
+        //Although excel and many database tools such as hadoop,mango,oracle,and sqlsever have build-in function to find the latest date
         //you can still use this function to get latest date in the log file such as XML or Notpade, this would be also useful
         //when you need to find the latest date from the webpage that contains large amount of info.
 
-        //date time conversion if needed
+        //Token filter
         for (int fx = 0; fx < datetime.Count; fx++)
         {
             datacollection[fx] = datetime[fx].ToString();//the formate can be adjust in the () of .ToString, e.g, "MM/dd/yyyy hh/mm/ss", please note that MM is months and mm is minutes.
@@ -76,9 +76,8 @@ public class GetLatestdate
 
         //end
 
-        //standard and descision tree filter
-
-        //if the date is not equal to years.max(); then the next node of months would be the end
+        // tokenizer indexing(binary only) 
+        // if the date is not equal to years.max(); then the next node of months would be the end
         // which means months equal to zero
         // and so on for the days, hours, minutes and finally get the seconds
         latestyear = years.Max();
@@ -128,11 +127,10 @@ public class GetLatestdate
 
         //final node
         latestsecond = seconds.Max();
-
-
         //end
 
-        //start going to the final node of datefinding decision tree
+        
+        //tokenizer wieghting
         for (int t = 0; t < datacollection.Count; t++)
         {
             if (years[t] == latestyear)
@@ -166,7 +164,7 @@ public class GetLatestdate
             }
         }
 
-        //finally we arrive the node and get the latest datetime
+        //finally we combine all the weight to get latest data
         for (int q = 0; q < datacollection.Count; q++)
         {
             if (savedateweight[q] == savedateweight.Max())
